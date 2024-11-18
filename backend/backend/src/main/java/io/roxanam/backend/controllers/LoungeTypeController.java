@@ -27,8 +27,7 @@ public class LoungeTypeController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public LoungeTypeDto save(@RequestBody LoungeTypeDto loungeTypeDto) {
-        loungeTypeService.save(LoungeTypeMapper.toLoungeType(loungeTypeDto));
-        return loungeTypeDto;
+        return LoungeTypeMapper.toLoungeTypeDto(loungeTypeService.save(LoungeTypeMapper.toLoungeType(loungeTypeDto)));
     }
 
     @GetMapping("/id/{id}")

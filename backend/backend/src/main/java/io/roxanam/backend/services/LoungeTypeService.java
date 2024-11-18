@@ -28,27 +28,28 @@ public class LoungeTypeService {
                 .orElseThrow(() -> new LoungeTypeFindException("Can not find lounge type with name: " + name));
     }
 
-
     public LoungeType save(LoungeType loungeType) {
         return loungeTypeRepository.save(loungeType);
     }
 
     @Transactional
-    public void deleteByName(String name) {
+    public String deleteByName(String name) {
         loungeTypeRepository.deleteByName(name);
+        return "LoungeType deleted successfully";
     }
 
     @Transactional
-    public void deleteById(Long id) {
+    public String deleteById(Long id) {
         loungeTypeRepository.deleteById(id);
+        return "LoungeType deleted successfully";
     }
 
     public String updateById(Long id, LoungeType loungeType) {
-       LoungeType existingLoungeType = loungeTypeRepository.findById(id)
-               .orElseThrow(() -> new LoungeTypeFindException("LoungeType with id: " + id + " not found"));
+       LoungeType existingLoungeType = findById(id);
 
        existingLoungeType.setName(loungeType.getName());
        existingLoungeType.setPhoto(loungeType.getPhoto());
+
        loungeTypeRepository.save(existingLoungeType);
 
        return "LoungeType updated successfully";
