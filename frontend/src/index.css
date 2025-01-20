@@ -1,0 +1,63 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #a36868;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background-image: url("https://www.canva.com/photos/MAFUPr1I11M-pink-watercolor-background/");
+  background-size: cover;
+  background-position: center;
+  filter: blur();
+}
+
+.salonPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+}
+
+.cardText {
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.allSalons {
+  display: flex;
+  margin: 20px;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  background-color: #fad7a0;
+  color: gray;
+  padding: 2rem 0;
+  text-align: center;
+  width: 100%;
+}
+
+main {
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
