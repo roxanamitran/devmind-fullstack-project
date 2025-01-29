@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import apiClient from "../api/axios";
 import { Button, Table, Col, Row, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,9 +11,13 @@ import {
 
 function SalonDetails() {
   const { id } = useParams();
-  console.log(id);
   const [salon, setSalon] = useState(null);
   const [services, setServices] = useState([]);
+  const navigate = useNavigate();
+
+  function handleAppointment() {
+    navigate(`/appointment?salon_id=${id}`);
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -105,7 +109,9 @@ function SalonDetails() {
                     <td>{service.price}</td>
                     <td>{service.duration}</td>
                     <td>
-                      <Button variant="light">Programeaza</Button>
+                      <Button variant="light" onClick={handleAppointment}>
+                        Programeaza
+                      </Button>
                     </td>
                   </tr>
                 ))}

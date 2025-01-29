@@ -12,8 +12,7 @@ public class AppointmentDto {
     private Instant startDate;
     private Instant endDate;
     private SalonDto salon;
-    private SalonOfferDto salonOffer;
+    private SalonToSalonOfferDto salonToSalonOffer;
     private UserDto customer;
     private UserDto employee;
-    private boolean isActive;
 }

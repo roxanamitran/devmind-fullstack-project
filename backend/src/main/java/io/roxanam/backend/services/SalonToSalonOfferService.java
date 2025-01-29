@@ -39,4 +39,6 @@ public class SalonToSalonOfferService {
         return salonToSalonOfferRepository.findAllBySalonOfferIdAndIsActiveTrue(salonOfferId);
     }
 
+
+
 }

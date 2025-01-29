@@ -6,13 +6,13 @@ import io.roxanam.backend.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.List;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-
-    boolean existsByIdAndIsActiveTrue(Long id);
-    List<Appointment> findAllByEmployeeAndIsActiveTrue(User employee);
-    List<Appointment> findAllByCustomerAndIsActiveTrue(User customer);
-    List<Appointment> findAllBySalonAndIsActiveTrue(Salon salon);
+    List<Appointment> findAllByEmployeeId(Long id);
+    List<Appointment> findAllByCustomer(User customer);
+    List<Appointment> findAllBySalon(Salon salon);
+    List<Appointment> findAllByEmployeeIdAndStartDateBetween(Long id, Instant start, Instant end);
 }

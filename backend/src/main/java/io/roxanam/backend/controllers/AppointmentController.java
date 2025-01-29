@@ -1,12 +1,15 @@
 package io.roxanam.backend.controllers;
 
 import io.roxanam.backend.dtos.AppointmentDto;
+import io.roxanam.backend.dtos.TimeSlotsDto;
 import io.roxanam.backend.entities.Appointment;
+import io.roxanam.backend.entities.AppointmentStatus;
 import io.roxanam.backend.mappers.AppointmentMapper;
 import io.roxanam.backend.services.AppointmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,20 +35,6 @@ public class AppointmentController {
         return AppointmentMapper.toDto(appointmentService.findById(id));
     }
 
-    @PutMapping("/{id}")
-    public AppointmentDto update(@PathVariable("id") Long id, AppointmentDto appointmentDto) {
-        if (id != appointmentDto.getId()) {
-            appointmentDto.setId(id);
-        }
-
-        return AppointmentMapper.toDto(appointmentService.update(AppointmentMapper.toEntity(appointmentDto)));
-    }
-
-    @DeleteMapping("/{id}")
-    public String deleteById(@PathVariable("id") Long id) {
-        appointmentService.deleteById(id);
-        return "Deleted.";
-    }
 
     @GetMapping("/by-employee/{id}")
     public List<AppointmentDto> findAllByEmployee(@PathVariable("id") Long employeeId) {
@@ -69,6 +58,16 @@ public class AppointmentController {
         return appointments.stream()
                 .map(a -> AppointmentMapper.toDto(a))
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping("/{id}/{status}")
+    public AppointmentDto accept(@PathVariable("id") Long id, @PathVariable("status")AppointmentStatus appointmentStatus) {
+        return AppointmentMapper.toDto(appointmentService.changeStatus(id, appointmentStatus));
+    }
+
+    @PostMapping("/available-slots")
+    public List<LocalTime> getAvailableSlots(@RequestBody TimeSlotsDto timeSlots) {
+        return appointmentService.calculateAvailableTimeslots(timeSlots);
     }
 
 

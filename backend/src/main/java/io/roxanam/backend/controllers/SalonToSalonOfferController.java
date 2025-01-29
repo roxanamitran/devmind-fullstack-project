@@ -1,10 +1,7 @@
 package io.roxanam.backend.controllers;
 
-import io.roxanam.backend.dtos.SalonOfferDto;
 import io.roxanam.backend.dtos.SalonToSalonOfferDto;
-import io.roxanam.backend.entities.SalonOffer;
 import io.roxanam.backend.entities.SalonToSalonOffer;
-import io.roxanam.backend.mappers.SalonOfferMapper;
 import io.roxanam.backend.mappers.SalonToSalonOfferMapper;
 import io.roxanam.backend.repositories.SalonToSalonOfferRepository;
 import io.roxanam.backend.services.SalonToSalonOfferService;

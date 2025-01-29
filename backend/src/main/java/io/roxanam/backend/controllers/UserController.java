@@ -58,4 +58,5 @@ public class UserController {
                 .map(u -> UserMapper.toDto(u))
                 .collect(Collectors.toList());
     }
+
 }

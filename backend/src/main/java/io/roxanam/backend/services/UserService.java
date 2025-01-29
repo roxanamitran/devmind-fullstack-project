@@ -44,4 +44,5 @@ public class UserService {
     public List<User> findAllByType(UserType userType) {
         return userRepository.findAllByUserTypeAndIsActiveTrue(userType);
     }
+
 }

@@ -3,6 +3,7 @@ package io.roxanam.backend.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.Duration;
 import java.time.Instant;
 
 @Entity
@@ -16,15 +17,14 @@ public class Appointment {
     private AppointmentStatus status;
     private Instant startDate;
     private Instant endDate;
-    private boolean isActive;
 
     @ManyToOne
     @JoinColumn(name = "salon_id", nullable = false)
     private Salon salon;
 
     @ManyToOne
-    @JoinColumn(name = "salon_offer_id", nullable = false)
-    private SalonOffer salonOffer;
+    @JoinColumn(name = "salon_to_salon_offer_id", nullable = false)
+    private SalonToSalonOffer salonToSalonOffer;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)

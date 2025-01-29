@@ -9,8 +9,8 @@ function Offers() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const respone = await apiClient.get("/salonOffers");
-        setData(respone.data);
+        const response = await apiClient.get("/salonOffers");
+        setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

@@ -16,7 +16,7 @@ public class AppointmentMapper {
         entity.setStartDate(dto.getStartDate());
         entity.setEndDate(dto.getEndDate());
         entity.setSalon(SalonMapper.toEntity(dto.getSalon()));
-        entity.setSalonOffer(SalonOfferMapper.toEntity(dto.getSalonOffer()));
+        entity.setSalonToSalonOffer(SalonToSalonOfferMapper.toEntity(dto.getSalonToSalonOffer()));
         entity.setCustomer(UserMapper.toEntity(dto.getCustomer()));
         entity.setEmployee(UserMapper.toEntity(dto.getEmployee()));
 
@@ -35,7 +35,7 @@ public class AppointmentMapper {
         dto.setStartDate(entity.getStartDate());
         dto.setEndDate(entity.getEndDate());
         dto.setSalon(SalonMapper.toDto(entity.getSalon()));
-        dto.setSalonOffer(SalonOfferMapper.toDto(entity.getSalonOffer()));
+        dto.setSalonToSalonOffer(SalonToSalonOfferMapper.toDto(entity.getSalonToSalonOffer()));
         dto.setCustomer(UserMapper.toDto(entity.getCustomer()));
         dto.setEmployee(UserMapper.toDto(entity.getEmployee()));
 
