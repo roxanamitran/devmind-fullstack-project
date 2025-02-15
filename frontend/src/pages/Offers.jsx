@@ -18,7 +18,7 @@ function Offers() {
     fetchData();
   }, []);
   return (
-    <Row xs={1} md={2} lg={4} className="g-1">
+    <Row xs={1} md={2} lg={3}>
       {data.map((offer) => (
         <Col key={offer.id}>
           <Offer offer={offer} />

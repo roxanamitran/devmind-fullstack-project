@@ -1,14 +1,7 @@
 function Footer() {
   return (
-    <>
+    <div className="color">
       <footer className="py-5 bg-dark">
-        <div className="container">
-          <p className="m-0 text-left text-white">
-            Parerea ta este foarte importanta pentru noi! Ajuta-ne sa devenim
-            mai buni. Spune-ti parerea la sectiunea "Lasa un review".
-          </p>
-        </div>
-        <br />
         <div className="container">
           <p className="m-0 text-left text-white">
             Detii un salon? Nu ezita sa ne conactezi.
@@ -19,11 +12,11 @@ function Footer() {
         <br />
         <div className="container">
           <p className="m-0 text-center text-white">
-            Copyright © Be Perfect 2025
+            Copyright © BeautyHub 2025
           </p>
         </div>
       </footer>
-    </>
+    </div>
   );
 }
 

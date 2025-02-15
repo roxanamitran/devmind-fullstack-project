@@ -4,16 +4,13 @@ function NavBarComponent() {
   return (
     <Navbar bg="dark" data-bs-theme="dark">
       <Container>
-        <Navbar.Brand>Be perfect</Navbar.Brand>
+        <Navbar.Brand>BeautyHub</Navbar.Brand>
         <Nav className="me-auto">
           <Nav.Link as={NavLink} to="/">
             Acasa
           </Nav.Link>
           <Nav.Link as={NavLink} to="/login">
             Logare
-          </Nav.Link>
-          <Nav.Link as={NavLink} to="/review">
-            Lasa un review
           </Nav.Link>
         </Nav>
       </Container>
