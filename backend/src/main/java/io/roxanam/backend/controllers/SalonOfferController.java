@@ -1,7 +1,6 @@
 package io.roxanam.backend.controllers;
 
-import io.roxanam.backend.dtos.SalonTo;
-import io.roxanam.backend.entities.SalonOffer;
+import io.roxanam.backend.dtos.SalonOffer;
 import io.roxanam.backend.mappers.SalonOfferMapper;
 import io.roxanam.backend.services.SalonOfferService;
 import lombok.AllArgsConstructor;
@@ -18,18 +17,18 @@ public class SalonOfferController {
     private SalonOfferService salonOfferService;
 
     @PostMapping
-    public SalonTo save(@RequestBody SalonTo salonOfferDto) {
+    public SalonOffer save(@RequestBody SalonOffer salonOfferDto) {
         return SalonOfferMapper.toDto(salonOfferService.save(SalonOfferMapper.toEntity(salonOfferDto)));
     }
 
     @GetMapping
-    public List<SalonTo> findAll() {
-        List<SalonOffer> salonOffers = salonOfferService.findAll();
+    public List<SalonOffer> findAll() {
+        List<io.roxanam.backend.entities.SalonOffer> salonOffers = salonOfferService.findAll();
         return salonOffers.stream().map(SalonOfferMapper::toDto).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public SalonTo findById(@PathVariable("id") Long id) {
+    public SalonOffer findById(@PathVariable("id") Long id) {
         return SalonOfferMapper.toDto(salonOfferService.findById(id));
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
@@ -47,22 +46,30 @@ public class AppointmentService {
         return appointmentRepository.findAll();
     }
 
-
-
     public Appointment changeStatus(Long id, AppointmentStatus appointmentStatus) {
         Appointment appointment = findById(id);
         appointment.setStatus(appointmentStatus);
         return appointmentRepository.save(appointment);
     }
 
-    public List<Appointment> findAllByEmployee(Long employeeId) {
+    public List<Appointment> findAllByEmployeeId(Long employeeId) {
         return appointmentRepository.findAllByEmployeeId(employeeId);
     }
 
-    public List<Appointment> findAllByCustomer(Long customerId) {
-        User foundedCustomer = userService.findById(customerId);
+    public List<Appointment> findAllByCustomerId(Long customerId) {
+        return appointmentRepository.findAllByCustomerId(customerId);
+    }
 
-        return appointmentRepository.findAllByCustomer(foundedCustomer);
+    public List<Appointment> findAllByEmployeeEmail(String email) {
+        return appointmentRepository.findAllByEmployeeEmail(email);
+    }
+
+    public List<Appointment> findAllByCustomerEmail(String email) {
+        return appointmentRepository.findAllByCustomerEmail(email);
+    }
+
+    public List<Appointment> findAllByManagerEmail(String email) {
+        return appointmentRepository.findAllBySalonManagerEmail(email);
     }
 
     public List<Appointment> findAllBySalon(Long salonId) {

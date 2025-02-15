@@ -6,6 +6,7 @@ import io.roxanam.backend.mappers.SalonToSalonOfferMapper;
 import io.roxanam.backend.repositories.SalonToSalonOfferRepository;
 import io.roxanam.backend.services.SalonToSalonOfferService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,5 +46,11 @@ public class SalonToSalonOfferController {
         return salonToSalonOffers.stream()
                 .map(s -> SalonToSalonOfferMapper.toDto(s))
                 .collect(Collectors.toList());
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteId(@PathVariable("id") Long id) {
+        salonToSalonOfferService.delete(id);
     }
 }

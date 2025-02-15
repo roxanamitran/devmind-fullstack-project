@@ -40,5 +40,7 @@ public class SalonToSalonOfferService {
     }
 
 
-
+    public void delete(Long id) {
+        salonToSalonOfferRepository.deleteById(id);
+    }
 }

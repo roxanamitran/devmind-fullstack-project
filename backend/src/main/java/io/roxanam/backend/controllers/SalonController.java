@@ -7,6 +7,7 @@ import io.roxanam.backend.mappers.SalonMapper;
 import io.roxanam.backend.mappers.UserMapper;
 import io.roxanam.backend.services.SalonService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class SalonController {
 
     @PostMapping
     public Salon save(@RequestBody SalonDto dto) {
-        return salonService.save(SalonMapper.toEntity(dto));
+        return salonService.save(SalonMapper.toEntity(dto), SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @GetMapping

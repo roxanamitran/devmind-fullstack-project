@@ -1,16 +1,12 @@
 package io.roxanam.backend.services;
 
-import ch.qos.logback.core.util.StringUtil;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
-import io.roxanam.backend.entities.QSalon;
-import io.roxanam.backend.entities.QSalonToSalonOffer;
-import io.roxanam.backend.entities.Salon;
-import io.roxanam.backend.entities.Schedule;
+import io.roxanam.backend.entities.*;
 import io.roxanam.backend.repositories.SalonRepository;
-import io.roxanam.backend.repositories.SalonToSalonOfferRepository;
 import io.roxanam.backend.repositories.ScheduleRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -25,15 +21,14 @@ public class SalonService {
     private UserService userService;
     private ScheduleRepository scheduleRepository;
 
-    public Salon save(Salon salon) {
+    public Salon save(Salon salon, String managerEmail) {
         List<Schedule> schedules = null;
         if (!CollectionUtils.isEmpty(salon.getSchedules())) {
             schedules = scheduleRepository.saveAll(salon.getSchedules());
         }
 
-        if (salon.getManager() != null) {
-            salon.setManager(userService.findById(salon.getManager().getId()));
-        }
+        User manager = userService.findByEmail(managerEmail);
+        salon.setManager(manager);
 
         if (schedules != null) {
             salon.setSchedules(schedules);
@@ -54,15 +49,15 @@ public class SalonService {
 
         BooleanExpression query = salon.isActive.eq(true);
 
-        if (salonName != null && salonName.trim().length() > 0) {
+        if (salonName != null && !salonName.trim().isEmpty()) {
             query = query.and(salon.name.containsIgnoreCase(salonName));
         }
 
-        if (salonAddress != null && salonAddress.trim().length() > 0) {
+        if (salonAddress != null && !salonAddress.trim().isEmpty()) {
             query = query.and(salon.address.containsIgnoreCase(salonAddress));
         }
 
-        if (salonOfferName != null && salonOfferName.trim().length() > 0) {
+        if (salonOfferName != null && !salonOfferName.trim().isEmpty()) {
             query = query.and(
                     JPAExpressions.selectOne()
                             .from(salonToSalonOffer)
@@ -86,11 +81,20 @@ public class SalonService {
             throw new RuntimeException("Can not update salon.");
         }
 
-        return save(salon);
+        String managerEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!salon.getManager().getEmail().equals(managerEmail)) {
+            throw new RuntimeException("Can not update salon which does not belong to logged user.");
+        }
+
+        return save(salon, managerEmail);
     }
 
     public Salon findByName(String name) {
-        return salonRepository.findByNameAndIsActiveTrue(name);
+        return salonRepository.findByNameAndIsActiveTrue(name).orElseThrow(() -> new RuntimeException("No salon found by name."));
+    }
+
+    public Salon findByManagerEmail(String managerEmail) {
+        return salonRepository.findByManagerEmailAndIsActiveTrue(managerEmail).orElseThrow(() -> new RuntimeException("No salon found by manager email."));
     }
 
     public List<Salon> findAllByAddress(String address) {

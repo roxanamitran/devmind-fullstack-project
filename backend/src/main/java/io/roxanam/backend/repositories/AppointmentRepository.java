@@ -8,11 +8,15 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     List<Appointment> findAllByEmployeeId(Long id);
-    List<Appointment> findAllByCustomer(User customer);
+    List<Appointment> findAllByCustomerId(Long id);
     List<Appointment> findAllBySalon(Salon salon);
     List<Appointment> findAllByEmployeeIdAndStartDateBetween(Long id, Instant start, Instant end);
+    List<Appointment> findAllByEmployeeEmail(String email);
+    List<Appointment> findAllByCustomerEmail(String email);
+    List<Appointment> findAllBySalonManagerEmail(String email);
 }

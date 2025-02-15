@@ -6,11 +6,13 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SalonRepository extends CrudRepository<Salon, Long>, QuerydslPredicateExecutor<Salon> {
     boolean existsByIdAndIsActiveTrue(Long id);
     List<Salon> findAllByIsActiveTrue();
-    Salon findByNameAndIsActiveTrue(String name);
+    Optional<Salon> findByNameAndIsActiveTrue(String name);
     List<Salon> findAllByAddressAndIsActiveTrue(String address);
+    Optional<Salon> findByManagerEmailAndIsActiveTrue(String managerEmail);
 }

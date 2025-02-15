@@ -23,8 +23,16 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmailAndIsActiveTrue(email).orElseThrow(RuntimeException::new);
+    }
+
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    public List<User> findAllAvailableEmployees() {
+        return userRepository.findAllAvailableEmployees();
     }
 
     public void deleteById(Long id) {

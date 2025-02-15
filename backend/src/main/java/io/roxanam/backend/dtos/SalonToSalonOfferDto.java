@@ -6,7 +6,7 @@ import lombok.Data;
 public class SalonToSalonOfferDto {
     private Long id;
     private SalonDto salon;
-    private SalonTo salonOffer;
+    private SalonOffer salonOffer;
     private Double price;
     private Integer duration;
 }

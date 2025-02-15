@@ -3,7 +3,7 @@ package io.roxanam.backend.dtos;
 import lombok.Data;
 
 @Data
-public class SalonTo {
+public class SalonOffer {
     private Long id;
     private String photoUrl;
     private String name;
