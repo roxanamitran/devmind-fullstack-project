@@ -11,6 +11,7 @@ import ViewAllAppointments from "./pages/ViewAllAppointments";
 import AddSalonOffer from "./pages/AddSalonOffer";
 import NavBarComponent from "./components/NavBarComponent.jsx";
 import Footer from "./components/Footer.jsx";
+import AsignEmployees from "./pages/AsignEmployees.jsx";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/create_user" element={<CreateUser />} />
           <Route path="/my_appointments" element={<ViewAllAppointments />} />
           <Route path="/add_salon_offer" element={<AddSalonOffer />} />
+          <Route path="/asign_employees" element={<AsignEmployees />}></Route>
         </Routes>
       </div>
 

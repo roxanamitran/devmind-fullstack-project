@@ -15,8 +15,15 @@ function SalonDetails() {
   const [services, setServices] = useState([]);
   const navigate = useNavigate();
 
-  function handleAppointment() {
-    navigate(`/appointment?salon_id=${id}`);
+  function handleOffers() {
+    navigate(`/add_salon_offer?salon_id=${id}`);
+  }
+
+  function handleEmployees() {
+    navigate(`/asign_employees?salon_id=${id}`);
+  }
+  function handleAppointment(salonOfferId) {
+    navigate(`/appointment?salon_id=${id}&salon_offer_id=${salonOfferId}`);
   }
 
   useEffect(() => {
@@ -109,7 +116,10 @@ function SalonDetails() {
                     <td>{service.price}</td>
                     <td>{service.duration}</td>
                     <td>
-                      <Button variant="light" onClick={handleAppointment}>
+                      <Button
+                        variant="light"
+                        onClick={() => handleAppointment(service.id)}
+                      >
                         Programeaza
                       </Button>
                     </td>
@@ -119,6 +129,17 @@ function SalonDetails() {
             </Table>
           </div>
         </Col>
+      </Row>
+      <Row>
+        <Button variant="dark" size="lg" onClick={handleOffers}>
+          Gestioneaza servicii
+        </Button>
+      </Row>
+      <br />
+      <Row>
+        <Button variant="dark" size="lg" onClick={handleEmployees}>
+          Gestioneaza angajatii
+        </Button>
       </Row>
     </Container>
   );
