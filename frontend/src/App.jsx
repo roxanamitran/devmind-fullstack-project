@@ -8,10 +8,10 @@ import AddSalon from "./pages/AddSalon";
 import Login from "./pages/Login";
 import CreateUser from "./pages/CreateUser";
 import ViewAllAppointments from "./pages/ViewAllAppointments";
-import AddSalonOffer from "./pages/AddSalonOffer";
+import ManageSalonOffers from "./pages/ManageSalonOffers.jsx";
 import NavBarComponent from "./components/NavBarComponent.jsx";
 import Footer from "./components/Footer.jsx";
-import AsignEmployees from "./pages/AsignEmployees.jsx";
+import ManageEmployees from "./pages/ManageEmployees.jsx";
 
 function App() {
   return (
@@ -33,8 +33,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/create_user" element={<CreateUser />} />
           <Route path="/my_appointments" element={<ViewAllAppointments />} />
-          <Route path="/add_salon_offer" element={<AddSalonOffer />} />
-          <Route path="/asign_employees" element={<AsignEmployees />}></Route>
+          <Route path="/add_salon_offer" element={<ManageSalonOffers />} />
+          <Route path="/asign_employees" element={<ManageEmployees />}></Route>
         </Routes>
       </div>
 

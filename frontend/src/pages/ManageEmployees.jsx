@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import apiClient from "../api/axios";
 import { Table, Button, Form } from "react-bootstrap";
-function AsignEmployees() {
+function ManageEmployees() {
   const queryParams = new URLSearchParams(location.search);
   const [refresh, setRefresh] = useState(false);
   const [employees, setEmployees] = useState([]);
@@ -87,4 +87,4 @@ function AsignEmployees() {
   );
 }
 
-export default AsignEmployees;
+export default ManageEmployees;

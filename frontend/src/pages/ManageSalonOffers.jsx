@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Form, Button, Table } from "react-bootstrap";
 import apiClient from "../api/axios";
 
-function AddSalonOffer() {
+function ManageSalonOffers() {
   const [salonOffers, setSalonOffers] = useState([]);
   const [salonToSalonOffers, setSalonToSalonOffers] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -149,4 +149,4 @@ function AddSalonOffer() {
   );
 }
 
-export default AddSalonOffer;
+export default ManageSalonOffers;
