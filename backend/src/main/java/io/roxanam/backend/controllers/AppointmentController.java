@@ -2,8 +2,10 @@ package io.roxanam.backend.controllers;
 
 import io.roxanam.backend.dtos.AppointmentDto;
 import io.roxanam.backend.dtos.TimeSlotsDto;
+import io.roxanam.backend.dtos.UserDto;
 import io.roxanam.backend.entities.Appointment;
 import io.roxanam.backend.entities.AppointmentStatus;
+import io.roxanam.backend.entities.User;
 import io.roxanam.backend.entities.UserType;
 import io.roxanam.backend.mappers.AppointmentMapper;
 import io.roxanam.backend.services.AppointmentService;
@@ -29,6 +31,14 @@ public class AppointmentController {
 
     @PostMapping
     public AppointmentDto save(@RequestBody AppointmentDto appointmentDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User customer = userService.findByEmail(authentication.getName());
+
+        UserDto customerDto = new UserDto();
+        customerDto.setId(customer.getId());
+
+        appointmentDto.setCustomer(customerDto);
+
         return AppointmentMapper.toDto((appointmentService.save(AppointmentMapper.toEntity(appointmentDto))));
     }
 

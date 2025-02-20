@@ -28,7 +28,6 @@
     </scm>
     <properties>
         <java.version>21</java.version>
-        <querydsl.version>5.0.0</querydsl.version>
         <lombok.version>1.18.36</lombok.version>
     </properties>
 
@@ -41,21 +40,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-apt</artifactId>
-            <version>${querydsl.version}</version>
-            <classifier>jakarta</classifier>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-jpa</artifactId>
-            <classifier>jakarta</classifier>
-            <version>${querydsl.version}</version>
         </dependency>
 
         <dependency>

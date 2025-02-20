@@ -25,10 +25,10 @@ public class AppointmentService {
     private HolidayService holidayService;
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
-    private static final ZoneId DEFAULT_ZONE_ID = ZoneId.systemDefault(); // Use system default or specify desired zone
 
     public Appointment save(Appointment appointment) {
-        appointment.setStatus(AppointmentStatus.PENDING);
+
+        appointment.setStatus(AppointmentStatus.ACCEPTED);
         appointment.setSalon(salonService.findById(appointment.getSalon().getId()));
         appointment.setSalonToSalonOffer(salonToSalonOfferService.findById(appointment.getSalonToSalonOffer().getId()));
         appointment.setCustomer(userService.findById(appointment.getEmployee().getId()));
@@ -87,9 +87,8 @@ public class AppointmentService {
         Salon salon = salonService.findById(salonId);
         List<Schedule> schedules = salon.getSchedules();
 
-        LocalDate localDate = date.atZone(DEFAULT_ZONE_ID).toLocalDate();
+        LocalDate localDate = date.atZone(ZoneId.of("UTC")).toLocalDate();
 
-        // Get the employee's schedule for the given day
         Schedule schedule = schedules.stream()
                 .filter(s -> s.getDay().equals(getWeekDay(localDate.getDayOfWeek())))
                 .findFirst()
@@ -99,12 +98,12 @@ public class AppointmentService {
             return Collections.emptyList(); // No schedule defined for this day
         }
 
-        // Check if it's a holiday for the employee
+
         List<Holiday> holidays = holidayService.findAllByEmployee(employeeId);
         if (holidays.stream()
                 .anyMatch(h -> {
-                    LocalDate holidayStartDate = h.getStartDate().atZone(DEFAULT_ZONE_ID).toLocalDate();
-                    LocalDate holidayEndDate = h.getEndDate().atZone(DEFAULT_ZONE_ID).toLocalDate();
+                    LocalDate holidayStartDate = h.getStartDate().atZone(ZoneId.of("UTC")).toLocalDate();
+                    LocalDate holidayEndDate = h.getEndDate().atZone(ZoneId.of("UTC")).toLocalDate();
                     return localDate.isAfter(holidayStartDate) && localDate.isBefore(holidayEndDate) && h.isActive();
                 })) {
             return Collections.emptyList(); // Employee is on holiday
@@ -113,7 +112,7 @@ public class AppointmentService {
         LocalTime startHour = LocalTime.parse(schedule.getStartHour(), TIME_FORMATTER);
         LocalTime endHour = LocalTime.parse(schedule.getEndHour(), TIME_FORMATTER);
 
-        // Create a list of all possible timeslots in 30-minute intervals
+
         List<LocalTime> allTimeslots = new ArrayList<>();
         LocalTime currentSlot = startHour;
         while (currentSlot.isBefore(endHour)) {
@@ -121,16 +120,16 @@ public class AppointmentService {
             currentSlot = currentSlot.plusMinutes(30);
         }
 
-        // Get all appointments for the employee on the given date
-        Instant startOfDay = date.atZone(DEFAULT_ZONE_ID).toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant();
-        Instant endOfDay = date.atZone(DEFAULT_ZONE_ID).toLocalDate().plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant();
+
+        Instant startOfDay = date.atZone(ZoneId.of("UTC")).toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant();
+        Instant endOfDay = date.atZone(ZoneId.of("UTC")).toLocalDate().plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant();
         List<Appointment> employeeAppointments = appointmentRepository.findAllByEmployeeIdAndStartDateBetween(employeeId, startOfDay, endOfDay);
 
-        // Remove timeslots occupied by appointments
+
         List<LocalTime> unavailableTimeslots = employeeAppointments.stream()
                 .flatMap(a -> {
-                    LocalTime startTime = a.getStartDate().atZone(DEFAULT_ZONE_ID).toLocalTime();
-                    LocalTime endTime = a.getEndDate().atZone(DEFAULT_ZONE_ID).toLocalTime();
+                    LocalTime startTime = a.getStartDate().atZone(ZoneId.of("UTC")).toLocalTime();
+                    LocalTime endTime = a.getEndDate().atZone(ZoneId.of("UTC")).toLocalTime();
                     List<LocalTime> unavailableSlots = new ArrayList<>();
                     LocalTime current = startTime;
                     while (current.isBefore(endTime)) {

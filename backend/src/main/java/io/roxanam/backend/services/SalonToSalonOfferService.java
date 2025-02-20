@@ -19,6 +19,7 @@ public class SalonToSalonOfferService {
     public SalonToSalonOffer save(SalonToSalonOffer salonToSalonOffer) {
         salonToSalonOffer.setSalonOffer(salonOfferService.findById(salonToSalonOffer.getSalonOffer().getId()));
         salonToSalonOffer.setSalon(salonService.findById(salonToSalonOffer.getSalon().getId()));
+        salonToSalonOffer.setActive(true);
 
         return salonToSalonOfferRepository.save(salonToSalonOffer);
     }

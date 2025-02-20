@@ -1,5 +1,7 @@
 package io.roxanam.backend.controllers;
 
+import ch.qos.logback.core.util.StringUtil;
+import io.micrometer.common.util.StringUtils;
 import io.roxanam.backend.dtos.SalonDto;
 import io.roxanam.backend.dtos.UserDto;
 import io.roxanam.backend.entities.Salon;
@@ -25,8 +27,8 @@ public class SalonController {
     }
 
     @GetMapping
-    public List<SalonDto> findAll(@RequestParam(required = false) String salonName, @RequestParam(required = false) String city, @RequestParam(required = false) String salonOffer) {
-        List <Salon> salons = salonService.findAll(salonName, city, salonOffer);
+    public List<SalonDto> findAll(@RequestParam(required = false) String salonOffer) {
+        List <Salon> salons = salonService.findAll(salonOffer);
 
         return salons.stream().map(SalonMapper::toDto).collect(Collectors.toList());
     }
@@ -56,5 +58,15 @@ public class SalonController {
         salonService.deleteById(id);
 
         return "Salon deleted.";
+    }
+
+    @PostMapping("/{salonId}/assign/{employeeId}")
+    public void assignEmployeeToSalon(@PathVariable("salonId") Long salonId, @PathVariable("employeeId") Long employeeId) {
+        salonService.assignEmployeeToSalon(salonId, employeeId);
+    }
+
+    @DeleteMapping("/{salonId}/remove/{employeeId}")
+    public void removeEmployeeToSalon(@PathVariable("salonId") Long salonId, @PathVariable("employeeId") Long employeeId) {
+        salonService.removeEmployeeFromSalon(salonId, employeeId);
     }
 }

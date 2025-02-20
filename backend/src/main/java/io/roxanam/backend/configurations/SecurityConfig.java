@@ -58,6 +58,8 @@ public class SecurityConfig {
                         .requestMatchers("/salonOffers").permitAll()
                         .requestMatchers("/salon-to-salon-offers/**").permitAll()
                         .requestMatchers("/salon-to-salon-offers/salonOffers/**").permitAll()
+                        .requestMatchers("/new_appointment/**").permitAll()
+
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(new CustomJwtAuthenticationConverter()))

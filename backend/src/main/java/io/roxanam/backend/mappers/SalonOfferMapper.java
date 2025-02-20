@@ -1,10 +1,10 @@
 package io.roxanam.backend.mappers;
 
-import io.roxanam.backend.dtos.SalonOffer;
+import io.roxanam.backend.dtos.SalonOfferDto;
 
 public class SalonOfferMapper {
 
-    public static io.roxanam.backend.entities.SalonOffer toEntity(SalonOffer dto) {
+    public static io.roxanam.backend.entities.SalonOffer toEntity(SalonOfferDto dto) {
         if (dto == null) {
             return null;
         }
@@ -17,12 +17,12 @@ public class SalonOfferMapper {
         return entity;
     }
 
-    public static SalonOffer toDto(io.roxanam.backend.entities.SalonOffer entity) {
+    public static SalonOfferDto toDto(io.roxanam.backend.entities.SalonOffer entity) {
         if (entity == null) {
             return  null;
         }
 
-        SalonOffer dto = new SalonOffer();
+        SalonOfferDto dto = new SalonOfferDto();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setPhotoUrl(entity.getPhotoUrl());

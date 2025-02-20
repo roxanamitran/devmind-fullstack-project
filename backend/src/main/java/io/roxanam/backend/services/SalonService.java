@@ -1,7 +1,5 @@
 package io.roxanam.backend.services;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.JPAExpressions;
 import io.roxanam.backend.entities.*;
 import io.roxanam.backend.repositories.SalonRepository;
 import io.roxanam.backend.repositories.ScheduleRepository;
@@ -11,8 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 @AllArgsConstructor
@@ -43,31 +39,12 @@ public class SalonService {
         return salonRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
-    public List<Salon> findAll(String salonName, String salonAddress, String salonOfferName) {
-        QSalon salon = QSalon.salon;
-        QSalonToSalonOffer salonToSalonOffer = QSalonToSalonOffer.salonToSalonOffer;
-
-        BooleanExpression query = salon.isActive.eq(true);
-
-        if (salonName != null && !salonName.trim().isEmpty()) {
-            query = query.and(salon.name.containsIgnoreCase(salonName));
+    public List<Salon> findAll(String salonOfferName) {
+        if (salonOfferName == null || salonOfferName.isBlank()) {
+            return (List<Salon>) salonRepository.findAll();
+        } else {
+            return salonRepository.findAllBySalonToSalonOffersSalonOfferNameAndIsActiveTrue(salonOfferName);
         }
-
-        if (salonAddress != null && !salonAddress.trim().isEmpty()) {
-            query = query.and(salon.address.containsIgnoreCase(salonAddress));
-        }
-
-        if (salonOfferName != null && !salonOfferName.trim().isEmpty()) {
-            query = query.and(
-                    JPAExpressions.selectOne()
-                            .from(salonToSalonOffer)
-                            .where(salonToSalonOffer.salon.eq(salon)
-                                    .and(salonToSalonOffer.salonOffer.name.eq(salonOfferName)))
-                            .exists());
-        }
-
-        return StreamSupport.stream(salonRepository.findAll(query).spliterator(), false)
-                .collect(Collectors.toList());
     }
 
     public void deleteById(Long id) {
@@ -99,5 +76,19 @@ public class SalonService {
 
     public List<Salon> findAllByAddress(String address) {
         return salonRepository.findAllByAddressAndIsActiveTrue(address);
+    }
+
+    public void assignEmployeeToSalon(Long salonId, Long employeeId) {
+        Salon salon = findById(salonId);
+        User user = userService.findById(employeeId);
+        salon.getEmployees().add(user);
+        this.salonRepository.save(salon);
+    }
+
+    public void removeEmployeeFromSalon(Long salonId, Long employeeId) {
+        Salon salon = findById(salonId);
+        User user = userService.findById(employeeId);
+        salon.getEmployees().remove(user);
+        this.salonRepository.save(salon);
     }
 }

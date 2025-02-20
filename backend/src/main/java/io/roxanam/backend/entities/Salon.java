@@ -27,6 +27,6 @@ public class Salon {
     @OneToMany
     private List<User> employees = new ArrayList<>();
     private boolean isActive;
-    @OneToMany
+    @OneToMany(mappedBy = "salon")
     private List<SalonToSalonOffer> salonToSalonOffers = new ArrayList<>();
 }

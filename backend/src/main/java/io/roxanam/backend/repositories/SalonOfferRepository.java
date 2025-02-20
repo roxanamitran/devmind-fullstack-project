@@ -8,8 +8,5 @@ import java.util.List;
 
 @Repository
 public interface SalonOfferRepository  extends JpaRepository<SalonOffer, Long> {
-
     List<SalonOffer> findAllByIsActiveTrue();
-    SalonOffer findSalonOfferByName(String name);
-
 }
