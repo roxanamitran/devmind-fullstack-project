@@ -10,9 +10,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 function SalonDetails() {
-  const { id } = useParams();
   const [salon, setSalon] = useState(null);
   const [services, setServices] = useState([]);
+
+  const { id } = useParams();
+
   const navigate = useNavigate();
 
   function handleOffers() {
@@ -29,18 +31,19 @@ function SalonDetails() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await apiClient.get(`/salons/${id}`);
-        setSalon(response.data);
+        const salonResponse = await apiClient.get(`/salons/${id}`);
+        setSalon(salonResponse.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching salon:", error);
       }
+
       try {
         const servicesResponse = await apiClient.get(
           `/salon-to-salon-offers/salonOffers/${id}`
         );
         setServices(servicesResponse.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching salon offers:", error);
       }
     };
     fetchData();

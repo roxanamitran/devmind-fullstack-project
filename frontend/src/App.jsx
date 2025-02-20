@@ -12,6 +12,7 @@ import ManageSalonOffers from "./pages/ManageSalonOffers.jsx";
 import NavBarComponent from "./components/NavBarComponent.jsx";
 import Footer from "./components/Footer.jsx";
 import ManageEmployees from "./pages/ManageEmployees.jsx";
+import NewAppointment from "./pages/NewAppointment.jsx";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/my_appointments" element={<ViewAllAppointments />} />
           <Route path="/add_salon_offer" element={<ManageSalonOffers />} />
           <Route path="/asign_employees" element={<ManageEmployees />}></Route>
+          <Route path="/new_appointment" element={<NewAppointment />}></Route>
         </Routes>
       </div>
 

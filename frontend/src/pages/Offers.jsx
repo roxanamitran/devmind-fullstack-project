@@ -4,22 +4,23 @@ import Offer from "../components/Offer";
 import { Row, Col } from "react-bootstrap";
 
 function Offers() {
-  const [data, setData] = useState([]);
+  const [salonOffers, setSalonOffers] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await apiClient.get("/salonOffers");
-        setData(response.data);
+        setSalonOffers(response.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching salonOffers", error);
       }
     };
     fetchData();
   }, []);
+
   return (
     <Row xs={1} md={2} lg={3}>
-      {data.map((offer) => (
+      {salonOffers.map((offer) => (
         <Col key={offer.id}>
           <Offer offer={offer} />
         </Col>

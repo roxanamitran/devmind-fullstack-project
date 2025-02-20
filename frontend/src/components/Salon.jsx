@@ -9,9 +9,11 @@ import {
 
 function Salon({ salon }) {
   const navigate = useNavigate();
+
   function showDetails() {
     navigate(`/salons/${salon.id}`);
   }
+
   return (
     <section className="py-5 salonPage">
       <div className="container px-4 px-lg-5 mt-5">

@@ -6,21 +6,18 @@ import { useNavigate } from "react-router-dom";
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
   const navigate = useNavigate();
 
   function createUser() {
     navigate("/create_user");
   }
+
   const handleLogin = async () => {
-    const response = await apiClient.post(
-      "/users/login",
-      { username, password },
-      {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }
-    );
+    const response = await apiClient.post("/users/login", {
+      username,
+      password
+    });
     if (response.data.token != null) {
       localStorage.setItem("jsonwebtoken", response.data.token);
       navigate("/home");

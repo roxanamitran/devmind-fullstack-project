@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import apiClient from "../api/axios";
 import { Table, Button, Form } from "react-bootstrap";
 function ManageEmployees() {
-  const queryParams = new URLSearchParams(location.search);
-  const [refresh, setRefresh] = useState(false);
-  const [employees, setEmployees] = useState([]);
-  const [oldEmployees, setOldEmployees] = useState([]);
+  const [availableEmployees, setAvailableEmployees] = useState([]);
+  const [curentEmployees, setCurentEmployees] = useState([]);
   const [dropdownEmployeeId, setDropdownEmployeeId] = useState("");
+  const [refresh, setRefresh] = useState(false);
 
+  const queryParams = new URLSearchParams(location.search);
   const salonId = queryParams.get("salon_id");
 
   const handleDelete = async (id) => {
@@ -32,8 +32,8 @@ function ManageEmployees() {
           setDropdownEmployeeId(freeEmployees.data[0].id);
         }
 
-        setEmployees(freeEmployees.data);
-        setOldEmployees(actualEmployees.data);
+        setAvailableEmployees(freeEmployees.data);
+        setCurentEmployees(actualEmployees.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -49,7 +49,7 @@ function ManageEmployees() {
         value={dropdownEmployeeId}
         onChange={(e) => setDropdownEmployeeId(e.target.value)}
       >
-        {employees.map((employee) => (
+        {availableEmployees.map((employee) => (
           <option key={employee.id} value={employee.id}>
             {employee.email}
           </option>
@@ -67,7 +67,7 @@ function ManageEmployees() {
           </tr>
         </thead>
         <tbody>
-          {oldEmployees.map((employee) => {
+          {curentEmployees.map((employee) => {
             return (
               <tr key={employee.id}>
                 <td>{employee.firstName}</td>

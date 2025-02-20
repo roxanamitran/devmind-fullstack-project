@@ -11,21 +11,24 @@ function CreateUser() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
   const [userType, setUserType] = useState("CUSTOMER");
+
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    const response = await apiClient.post("/users", {
-      email,
-      password,
-      firstName,
-      lastName,
-      phoneNumber,
-      photoUrl,
-      userType
-    });
+    try {
+      await apiClient.post("/users", {
+        email,
+        password,
+        firstName,
+        lastName,
+        phoneNumber,
+        photoUrl,
+        userType
+      });
 
-    if (response != null) {
       navigate("/login");
+    } catch (error) {
+      console.log("Error saving an user", error);
     }
   };
 

@@ -6,9 +6,9 @@ import { Col } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 
 function Salons() {
-  const location = useLocation();
+  const [salons, setSalons] = useState([]);
 
-  const [data, setData] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -21,10 +21,9 @@ function Salons() {
     const fetchData = async () => {
       try {
         const response = await apiClient.get(endpointUrl);
-
-        setData(response.data);
+        setSalons(response.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching salons:", error);
       }
     };
     fetchData();
@@ -36,7 +35,7 @@ function Salons() {
         <h1>Găsește salonul potrivit dorințelor tale!</h1>
       </header>
       <Row xs={1} md={2} lg={4} className="g-1">
-        {data.map((salon) => (
+        {salons.map((salon) => (
           <Col key={salon.id}>
             <Salon salon={salon} />
           </Col>

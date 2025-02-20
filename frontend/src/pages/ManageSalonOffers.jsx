@@ -19,31 +19,6 @@ function ManageSalonOffers() {
     setRefresh((refresh) => !refresh);
   };
 
-  useEffect(() => {
-    if (salonId) {
-      const fetchData = async () => {
-        try {
-          const salonOffers = await apiClient.get("/salonOffers");
-          const salonToSalonOffers = await apiClient.get(
-            `/salon-to-salon-offers/salonOffers/${salonId}`
-          );
-
-          if (salonOffers.data && salonOffers.data.length > 0) {
-            setSalonOfferId(salonOffers.data[0].id);
-            setSalonOffers(salonOffers.data);
-          }
-
-          if (salonToSalonOffers.data && salonOffers.data.length > 0) {
-            setSalonToSalonOffers(salonToSalonOffers.data);
-          }
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
-      fetchData();
-    }
-  }, [refresh]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -72,6 +47,31 @@ function ManageSalonOffers() {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (salonId) {
+      const fetchData = async () => {
+        try {
+          const salonOffers = await apiClient.get("/salonOffers");
+          const salonToSalonOffers = await apiClient.get(
+            `/salon-to-salon-offers/salonOffers/${salonId}`
+          );
+
+          if (salonOffers.data && salonOffers.data.length > 0) {
+            setSalonOfferId(salonOffers.data[0].id);
+            setSalonOffers(salonOffers.data);
+          }
+
+          if (salonToSalonOffers.data && salonOffers.data.length > 0) {
+            setSalonToSalonOffers(salonToSalonOffers.data);
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      fetchData();
+    }
+  }, [refresh]);
 
   if (!salonId) {
     return "No salon selected";
