@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -6,13 +6,27 @@ import {
   faEnvelope,
   faHouse
 } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+
 
 function Salon({ salon }) {
   const navigate = useNavigate();
+  const token = localStorage.getItem("jsonwebtoken");
+  const [showModal, setShowModal] = useState(false);
+
 
   function showDetails() {
-    navigate(`/salons/${salon.id}`);
+    if(token) {
+      navigate(`/salons/${salon.id}`);
+    } else {
+      setShowModal(true);
+    }
   }
+
+  function goToLoginPage() {
+    navigate("/login");
+  }
+
 
   return (
     <section className="py-5 salonPage">
@@ -74,6 +88,27 @@ function Salon({ salon }) {
           </div>
         </div>
       </div>
+      {showModal && (
+        <div
+          className="modal show"
+          style={{ display: 'block', position: 'center' }}
+        >
+          <Modal.Dialog>
+            <Modal.Header closeButton onClick={() => setShowModal(false)}>
+              <Modal.Title>Atentie!</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+              <p>Pentru a putea vedea detaliile salonului, este necesar sa te loghezi.</p>
+            </Modal.Body>
+
+            <Modal.Footer>
+              <Button variant="dark" onClick={() => setShowModal(false)}>Inchide</Button>
+              <Button variant="success" onClick={goToLoginPage}>Mergi catre pagina de logare.</Button>
+            </Modal.Footer>
+          </Modal.Dialog>
+        </div>
+      )}
     </section>
   );
 }

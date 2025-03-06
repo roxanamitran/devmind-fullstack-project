@@ -22,7 +22,6 @@ public class AppointmentService {
     private SalonService salonService;
     private SalonToSalonOfferService salonToSalonOfferService;
     private UserService userService;
-    private HolidayService holidayService;
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -31,8 +30,8 @@ public class AppointmentService {
         appointment.setStatus(AppointmentStatus.ACCEPTED);
         appointment.setSalon(salonService.findById(appointment.getSalon().getId()));
         appointment.setSalonToSalonOffer(salonToSalonOfferService.findById(appointment.getSalonToSalonOffer().getId()));
-        appointment.setCustomer(userService.findById(appointment.getEmployee().getId()));
-        appointment.setEmployee(userService.findById(appointment.getCustomer().getId()));
+        appointment.setCustomer(userService.findById(appointment.getCustomer().getId()));
+        appointment.setEmployee(userService.findById(appointment.getEmployee().getId()));
         appointment.setEndDate(appointment.getStartDate().plus(appointment.getSalonToSalonOffer().getDuration(), ChronoUnit.MINUTES));
         return appointmentRepository.save(appointment);
     }
@@ -87,7 +86,7 @@ public class AppointmentService {
         Salon salon = salonService.findById(salonId);
         List<Schedule> schedules = salon.getSchedules();
 
-        LocalDate localDate = date.atZone(ZoneId.of("UTC")).toLocalDate();
+        LocalDate localDate = date.atZone(ZoneId.of("Europe/Bucharest")).toLocalDate();
 
         Schedule schedule = schedules.stream()
                 .filter(s -> s.getDay().equals(getWeekDay(localDate.getDayOfWeek())))
@@ -95,18 +94,7 @@ public class AppointmentService {
                 .orElse(null);
 
         if (schedule == null) {
-            return Collections.emptyList(); // No schedule defined for this day
-        }
-
-
-        List<Holiday> holidays = holidayService.findAllByEmployee(employeeId);
-        if (holidays.stream()
-                .anyMatch(h -> {
-                    LocalDate holidayStartDate = h.getStartDate().atZone(ZoneId.of("UTC")).toLocalDate();
-                    LocalDate holidayEndDate = h.getEndDate().atZone(ZoneId.of("UTC")).toLocalDate();
-                    return localDate.isAfter(holidayStartDate) && localDate.isBefore(holidayEndDate) && h.isActive();
-                })) {
-            return Collections.emptyList(); // Employee is on holiday
+            return Collections.emptyList();
         }
 
         LocalTime startHour = LocalTime.parse(schedule.getStartHour(), TIME_FORMATTER);
@@ -121,15 +109,14 @@ public class AppointmentService {
         }
 
 
-        Instant startOfDay = date.atZone(ZoneId.of("UTC")).toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant();
-        Instant endOfDay = date.atZone(ZoneId.of("UTC")).toLocalDate().plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant();
-        List<Appointment> employeeAppointments = appointmentRepository.findAllByEmployeeIdAndStartDateBetween(employeeId, startOfDay, endOfDay);
+        Instant endDate = date.plus(24, ChronoUnit.HOURS);
+        System.out.println(endDate);
+        List<Appointment> employeeAppointments = appointmentRepository.findAllByEmployeeIdAndStartDateBetweenAndStatus(employeeId, date, endDate, AppointmentStatus.ACCEPTED);
 
-
-        List<LocalTime> unavailableTimeslots = employeeAppointments.stream()
+        List<LocalTime> unavailableTimeslotsBasedOnAppointment = employeeAppointments.stream()
                 .flatMap(a -> {
-                    LocalTime startTime = a.getStartDate().atZone(ZoneId.of("UTC")).toLocalTime();
-                    LocalTime endTime = a.getEndDate().atZone(ZoneId.of("UTC")).toLocalTime();
+                    LocalTime startTime = a.getStartDate().atZone(ZoneId.of("Europe/Bucharest")).toLocalTime();
+                    LocalTime endTime = a.getEndDate().atZone(ZoneId.of("Europe/Bucharest")).toLocalTime();
                     List<LocalTime> unavailableSlots = new ArrayList<>();
                     LocalTime current = startTime;
                     while (current.isBefore(endTime)) {
@@ -141,8 +128,18 @@ public class AppointmentService {
                 .distinct()
                 .toList();
 
-        // Remove unavailable timeslots from all possible timeslots
-        allTimeslots.removeAll(unavailableTimeslots);
+        Set<LocalTime> unavailableTimeslotsBasedOnDuration = new HashSet<>();
+        for(LocalTime localTime : unavailableTimeslotsBasedOnAppointment) {
+            int slotDuration = 30;
+            while (slotDuration < timeSlots.getDuration()) {
+                unavailableTimeslotsBasedOnDuration.add(localTime.minusMinutes(slotDuration));
+                slotDuration += 30;
+            }
+        }
+
+
+        allTimeslots.removeAll(unavailableTimeslotsBasedOnAppointment);
+        allTimeslots.removeAll(unavailableTimeslotsBasedOnDuration);
 
         return allTimeslots;
     }
@@ -171,6 +168,10 @@ public class AppointmentService {
                 return Day.DUMINICA;
             }
         }
+    }
+
+    public void deleteById(Long id) {
+        appointmentRepository.deleteById(id);
     }
 }
 

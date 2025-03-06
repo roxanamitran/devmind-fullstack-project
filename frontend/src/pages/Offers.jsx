@@ -7,7 +7,7 @@ function Offers() {
   const [salonOffers, setSalonOffers] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const offers = async () => {
       try {
         const response = await apiClient.get("/salonOffers");
         setSalonOffers(response.data);
@@ -15,7 +15,7 @@ function Offers() {
         console.error("Error fetching salonOffers", error);
       }
     };
-    fetchData();
+    offers();
   }, []);
 
   return (

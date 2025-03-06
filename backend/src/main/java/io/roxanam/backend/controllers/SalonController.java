@@ -1,14 +1,16 @@
 package io.roxanam.backend.controllers;
 
-import ch.qos.logback.core.util.StringUtil;
-import io.micrometer.common.util.StringUtils;
+
 import io.roxanam.backend.dtos.SalonDto;
 import io.roxanam.backend.dtos.UserDto;
 import io.roxanam.backend.entities.Salon;
+import io.roxanam.backend.exceptions.SalonNotFoundException;
 import io.roxanam.backend.mappers.SalonMapper;
 import io.roxanam.backend.mappers.UserMapper;
 import io.roxanam.backend.services.SalonService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,5 +70,15 @@ public class SalonController {
     @DeleteMapping("/{salonId}/remove/{employeeId}")
     public void removeEmployeeToSalon(@PathVariable("salonId") Long salonId, @PathVariable("employeeId") Long employeeId) {
         salonService.removeEmployeeFromSalon(salonId, employeeId);
+    }
+
+    @GetMapping("/search/by-logged-in-manager")
+    public ResponseEntity findByLoggedInManager() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        try {
+            return ResponseEntity.ok(SalonMapper.toDto(salonService.findByManagerEmail(authentication.getName())));
+        } catch (SalonNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

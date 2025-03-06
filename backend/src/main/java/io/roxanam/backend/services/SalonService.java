@@ -1,6 +1,7 @@
 package io.roxanam.backend.services;
 
 import io.roxanam.backend.entities.*;
+import io.roxanam.backend.exceptions.SalonNotFoundException;
 import io.roxanam.backend.repositories.SalonRepository;
 import io.roxanam.backend.repositories.ScheduleRepository;
 import lombok.AllArgsConstructor;
@@ -66,17 +67,6 @@ public class SalonService {
         return save(salon, managerEmail);
     }
 
-    public Salon findByName(String name) {
-        return salonRepository.findByNameAndIsActiveTrue(name).orElseThrow(() -> new RuntimeException("No salon found by name."));
-    }
-
-    public Salon findByManagerEmail(String managerEmail) {
-        return salonRepository.findByManagerEmailAndIsActiveTrue(managerEmail).orElseThrow(() -> new RuntimeException("No salon found by manager email."));
-    }
-
-    public List<Salon> findAllByAddress(String address) {
-        return salonRepository.findAllByAddressAndIsActiveTrue(address);
-    }
 
     public void assignEmployeeToSalon(Long salonId, Long employeeId) {
         Salon salon = findById(salonId);
@@ -91,4 +81,11 @@ public class SalonService {
         salon.getEmployees().remove(user);
         this.salonRepository.save(salon);
     }
+
+    public Salon findByManagerEmail(String managerEmail) {
+        return salonRepository.findByManagerEmailAndIsActiveTrue(managerEmail)
+                .orElseThrow(() -> new SalonNotFoundException("No salon found by manager email."));
+    }
+
+
 }

@@ -34,8 +34,9 @@ function CreateUser() {
 
   return (
     <div>
-      <Form className="form">
-        <h1>Creeaza-ti un cont</h1>
+      <div className="centrat"><h1>Creeaza-ti un cont</h1></div>
+      <Form className="form2">
+        
         <Form.Group as={Row} className="mb-3">
           <Form.Label column sm="2">
             Prenume
@@ -87,7 +88,7 @@ function CreateUser() {
         </Form.Group>
         <Form.Group as={Row} className="mb-3">
           <Form.Label column sm="2">
-            Utilizator
+            Tip utilizator
           </Form.Label>
           <Col sm="10">
             <Form.Select
@@ -130,7 +131,7 @@ function CreateUser() {
             />
           </Col>
         </Form.Group>
-        <Button onClick={handleSubmit}>Creeaza cont</Button>
+        <Button onClick={handleSubmit} variant="success" >Creeaza cont</Button>
       </Form>
     </div>
   );

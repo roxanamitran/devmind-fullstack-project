@@ -19,7 +19,7 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, JwtAuthe
     }
 
     private Collection<GrantedAuthority> extractAuthorities(Jwt jwt) {
-        List<String> roles = jwt.getClaimAsStringList("authorities"); // Ensure this matches your claim name!
+        List<String> roles = jwt.getClaimAsStringList("authorities");
         if (roles == null) {
             return List.of();
         }

@@ -1,5 +1,6 @@
 package io.roxanam.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 

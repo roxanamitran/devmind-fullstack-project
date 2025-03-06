@@ -11,8 +11,6 @@ import java.util.Optional;
 @Repository
 public interface SalonRepository extends CrudRepository<Salon, Long> {
     boolean existsByIdAndIsActiveTrue(Long id);
-    Optional<Salon> findByNameAndIsActiveTrue(String name);
-    List<Salon> findAllByAddressAndIsActiveTrue(String address);
     Optional<Salon> findByManagerEmailAndIsActiveTrue(String managerEmail);
     List<Salon> findAllBySalonToSalonOffersSalonOfferNameAndIsActiveTrue(@Param("name") String name);
 }

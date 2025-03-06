@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import apiClient from "../api/axios";
 import { Button, Table, Col, Row, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { jwtDecode } from 'jwt-decode'
 import {
   faPhone,
   faEnvelope,
@@ -12,6 +13,9 @@ import {
 function SalonDetails() {
   const [salon, setSalon] = useState(null);
   const [services, setServices] = useState([]);
+
+  const token = localStorage.getItem("jsonwebtoken");
+  const decodedToken = jwtDecode(token);
 
   const { id } = useParams();
 
@@ -24,14 +28,18 @@ function SalonDetails() {
   function handleEmployees() {
     navigate(`/asign_employees?salon_id=${id}`);
   }
-  function handleAppointment(salonOfferId) {
-    navigate(`/appointment?salon_id=${id}&salon_offer_id=${salonOfferId}`);
+  function handleAppointment(salonOfferId, duration) {
+    navigate(`/appointment?salon_id=${id}&salon_offer_id=${salonOfferId}&duration=${duration}`);
   }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const salonResponse = await apiClient.get(`/salons/${id}`);
+        const salonResponse = await apiClient.get(`/salons/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jsonwebtoken")}`
+          }
+        });
         setSalon(salonResponse.data);
       } catch (error) {
         console.error("Error fetching salon:", error);
@@ -121,7 +129,7 @@ function SalonDetails() {
                     <td>
                       <Button
                         variant="light"
-                        onClick={() => handleAppointment(service.id)}
+                        onClick={() => handleAppointment(service.id, service.duration)}
                       >
                         Programeaza
                       </Button>
@@ -133,17 +141,21 @@ function SalonDetails() {
           </div>
         </Col>
       </Row>
-      <Row>
-        <Button variant="dark" size="lg" onClick={handleOffers}>
-          Gestioneaza servicii
-        </Button>
-      </Row>
-      <br />
-      <Row>
-        <Button variant="dark" size="lg" onClick={handleEmployees}>
-          Gestioneaza angajatii
-        </Button>
-      </Row>
+      {(decodedToken && decodedToken.sub === salon.manager.email) &&
+      <>
+        <Row>
+          <Button variant="dark" size="lg" onClick={handleOffers}>
+            Gestioneaza servicii
+          </Button>
+        </Row>
+        <br />
+        <Row>
+          <Button variant="dark" size="lg" onClick={handleEmployees}>
+            Gestioneaza angajatii
+          </Button>
+        </Row>
+      </>
+    }
     </Container>
   );
 }

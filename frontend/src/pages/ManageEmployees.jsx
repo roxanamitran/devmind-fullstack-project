@@ -1,31 +1,56 @@
 import { useEffect, useState } from "react";
 import apiClient from "../api/axios";
 import { Table, Button, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 function ManageEmployees() {
   const [availableEmployees, setAvailableEmployees] = useState([]);
   const [curentEmployees, setCurentEmployees] = useState([]);
   const [dropdownEmployeeId, setDropdownEmployeeId] = useState("");
   const [refresh, setRefresh] = useState(false);
+  const navigate = useNavigate();
 
   const queryParams = new URLSearchParams(location.search);
   const salonId = queryParams.get("salon_id");
 
   const handleDelete = async (id) => {
-    await apiClient.delete(`/salons/${salonId}/remove/${id}`);
+    await apiClient.delete(`/salons/${salonId}/remove/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jsonwebtoken")}`
+      }
+    });
     setRefresh((refresh) => !refresh);
   };
 
   const handleAdd = async () => {
-    await apiClient.post(`/salons/${salonId}/assign/${dropdownEmployeeId}`);
+    await apiClient.post(`/salons/${salonId}/assign/${dropdownEmployeeId}`, 
+      {},
+      {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jsonwebtoken")}`
+      }
+    });
     setRefresh((refresh) => !refresh);
   };
+
+  function backToSalon() {
+    navigate(`/salons/${salonId}`);
+ 
+  }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const freeEmployees = await apiClient.get("users/available-employees");
+        const freeEmployees = await apiClient.get("users/available-employees", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jsonwebtoken")}`
+          }
+        });
         const actualEmployees = await apiClient.get(
-          `salons/${salonId}/employees`
+          `salons/${salonId}/employees`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("jsonwebtoken")}`
+            }
+          }
         );
 
         if (freeEmployees.data.length > 0) {
@@ -43,7 +68,8 @@ function ManageEmployees() {
 
   return (
     <>
-      <h1>Angajatii vacanti</h1>
+    <div className="centrat"><h1>Angajatii vacanti</h1></div>
+      <div className="form4">
       <Form.Select
         type="text"
         value={dropdownEmployeeId}
@@ -55,7 +81,7 @@ function ManageEmployees() {
           </option>
         ))}
       </Form.Select>
-      <Button onClick={handleAdd}>Adauga</Button>
+      <Button  variant = "success" onClick={handleAdd}>Adauga angajat</Button>
 
       <h3>Persoanele angajate la acest salon</h3>
       <Table>
@@ -74,8 +100,8 @@ function ManageEmployees() {
                 <td>{employee.lastName}</td>
                 <td>{employee.email}</td>
                 <td>
-                  <Button onClick={() => handleDelete(employee.id)}>
-                    Delete
+                  <Button  variant = "danger" onClick={() => handleDelete(employee.id)}>
+                    Sterge angajat
                   </Button>
                 </td>
               </tr>
@@ -83,6 +109,8 @@ function ManageEmployees() {
           })}
         </tbody>
       </Table>
+      <Button variant="dark" onClick={backToSalon}>Inapoi la salon</Button>
+      </div>
     </>
   );
 }

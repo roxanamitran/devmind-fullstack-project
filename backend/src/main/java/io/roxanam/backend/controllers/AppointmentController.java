@@ -99,5 +99,10 @@ public class AppointmentController {
         return appointmentService.calculateAvailableTimeslots(timeSlots);
     }
 
+    @DeleteMapping
+    public void delete(Long id) {
+        appointmentService.deleteById(id);
+    }
+
 
 }

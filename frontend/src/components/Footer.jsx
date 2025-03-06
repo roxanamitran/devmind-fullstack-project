@@ -6,7 +6,7 @@ function Footer() {
           <p className="m-0 text-left text-white">
             Detii un salon? Nu ezita sa ne conactezi.
           </p>
-          <p className="m-0 text-left text-white">Email: info@BePerfect.com</p>
+          <p className="m-0 text-left text-white">Email: info@BeautyHub.com</p>
           <p className="m-0 text-left text-white">Telefon: +123 456 789</p>
         </div>
         <br />

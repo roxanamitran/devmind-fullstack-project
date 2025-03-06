@@ -6,22 +6,18 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -37,11 +33,6 @@ public class SecurityConfig {
     @Value("${security.jwt.secret-key}")
     private String secretKey;
 
-//    @Bean
-//    public void configure(WebSecurity web) {
-//        web.ignoring().requestMatchers(request -> HttpMethod.OPTIONS.equals(request.getMethod()));
-//    }
-
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
@@ -53,8 +44,9 @@ public class SecurityConfig {
                         .requestMatchers("/users/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/salons").permitAll()
                         .requestMatchers(HttpMethod.POST, "/salons").hasRole("MANAGER")
-                        .requestMatchers("/salons/**").permitAll()
-                        .requestMatchers("/appointments/**").permitAll()
+                        .requestMatchers("/salons/by-manager-email").hasRole("MANAGER")
+                        .requestMatchers("/salons/**").authenticated()
+                        .requestMatchers("/appointments/**").authenticated()
                         .requestMatchers("/salonOffers").permitAll()
                         .requestMatchers("/salon-to-salon-offers/**").permitAll()
                         .requestMatchers("/salon-to-salon-offers/salonOffers/**").permitAll()

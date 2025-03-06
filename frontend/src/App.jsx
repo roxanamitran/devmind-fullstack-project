@@ -12,13 +12,16 @@ import ManageSalonOffers from "./pages/ManageSalonOffers.jsx";
 import NavBarComponent from "./components/NavBarComponent.jsx";
 import Footer from "./components/Footer.jsx";
 import ManageEmployees from "./pages/ManageEmployees.jsx";
-import NewAppointment from "./pages/NewAppointment.jsx";
+import { useLocation } from 'react-router-dom';
+import MySalon from "./pages/MySalon.jsx";
 
 function App() {
+  const location = useLocation();
+
   return (
     <div className="app-container">
       <div className="top-component">
-        <NavBarComponent />
+        <NavBarComponent key={location.pathname}/>
       </div>
 
       <div className="scrollable-content">
@@ -36,7 +39,7 @@ function App() {
           <Route path="/my_appointments" element={<ViewAllAppointments />} />
           <Route path="/add_salon_offer" element={<ManageSalonOffers />} />
           <Route path="/asign_employees" element={<ManageEmployees />}></Route>
-          <Route path="/new_appointment" element={<NewAppointment />}></Route>
+          <Route path="/my_salon" element={<MySalon />}></Route>
         </Routes>
       </div>
 

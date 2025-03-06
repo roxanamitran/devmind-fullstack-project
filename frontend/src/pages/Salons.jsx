@@ -31,9 +31,9 @@ function Salons() {
 
   return (
     <>
-      <header className="py-5npm ">
+      <div className="centrat">
         <h1>Găsește salonul potrivit dorințelor tale!</h1>
-      </header>
+      </div>
       <Row xs={1} md={2} lg={4} className="g-1">
         {salons.map((salon) => (
           <Col key={salon.id}>

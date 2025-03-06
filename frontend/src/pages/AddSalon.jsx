@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Form, Button, Table } from "react-bootstrap";
 import apiClient from "../api/axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function AddSalon() {
   const daysOfWeek = [
@@ -29,6 +29,7 @@ function AddSalon() {
   const [city, setCity] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
   const [description, setDescription] = useState("");
+  const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
@@ -63,11 +64,11 @@ function AddSalon() {
     newSchedules[index].isClosed = !newSchedules[index].isClosed;
 
     if (newSchedules[index].isClosed) {
-      newSchedules[index].startTime = "--";
-      newSchedules[index].endTime = "--";
+      newSchedules[index].startHour = "--";
+      newSchedules[index].endHour = "--";
     } else {
-      newSchedules[index].startTime = "";
-      newSchedules[index].endTime = "";
+      newSchedules[index].startHour = "";
+      newSchedules[index].endHour = "";
     }
 
     setSchedules(newSchedules);
@@ -94,12 +95,15 @@ function AddSalon() {
             Authorization: `Bearer ${localStorage.getItem("jsonwebtoken")}`
           }
         });
+
+        navigate("/my_salon");
       } else {
         await apiClient.post("salons", newSalon, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jsonwebtoken")}`
           }
         });
+        navigate("/my_salon");
       }
 
       setName("");
@@ -115,119 +119,126 @@ function AddSalon() {
   };
 
   return (
-    <div className="form">
-      <Form className="form" onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Label>Numele salonului</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Introduceti numele salonului"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Numarul de telefon</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Introduceti numarul de telefon"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Email salon</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Introduceti adresa de email a salonului"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Adresa</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Introduceti adresa salonului"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Imaginea</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            placeholder="Introduceti url-ul imaginii"
-            value={photoUrl}
-            onChange={(e) => setPhotoUrl(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Orasul</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Introduceti orasul in care se afla salonul"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Descrierea salonului</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Introduceti descrierea salonului"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </Form.Group>
-        <Table>
-          <thead>
-            <tr>
-              <th>Ziua saptamanii</th>
-              <th>Ora de deschidere</th>
-              <th>Ora de inchidere</th>
-            </tr>
-          </thead>
-          <tbody>
-            {schedules.map((row, index) => (
-              <tr key={index}>
-                <td>{row.day}</td>
-                <td>
-                  <input
-                    type="time"
-                    value={row.startTime}
-                    onChange={(e) =>
-                      handleSchedulesChange(index, "startHour", e.target.value)
-                    }
-                    disabled={row.startTime === "--"}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="time"
-                    value={row.endTime}
-                    onChange={(e) =>
-                      handleSchedulesChange(index, "endHour", e.target.value)
-                    }
-                    disabled={row.endTime === "--"}
-                  />
-                </td>
-                <td>
-                  <button onClick={() => handleClosedDay(index)}>
-                    {row.isClosed ? "Seteaza programul" : "Zi libera"}
-                  </button>
-                </td>
+    <>
+      <div>
+        <Form className="addSalon">
+          <Form.Group className="mb-3">
+            <Form.Label>Numele salonului</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Introduceti numele"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Numarul de telefon</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Introduceti telefonul"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Email salon</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Introduceti emailul"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Adresa</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Introduceti adresa"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Imaginea</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="Introduceti url-ul imaginii"
+              value={photoUrl}
+              onChange={(e) => setPhotoUrl(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Orasul</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Introduceti orasul"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Descrierea salonului</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Introduceti descrierea"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </Form.Group>
+          <Table>
+            <thead>
+              <tr>
+                <th>Ziua saptamanii</th>
+                <th>Ora de deschidere</th>
+                <th>Ora de inchidere</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-
-        <Button variant="success" type="submit">
-          Salveaza modificarile facute
-        </Button>
-      </Form>
-    </div>
+            </thead>
+            <tbody>
+              {schedules.map((row, index) => (
+                <tr key={index}>
+                  <td>{row.day}</td>
+                  <td>
+                    <input
+                      type="time"
+                      value={row.startHour}
+                      onChange={(e) =>
+                        handleSchedulesChange(
+                          index,
+                          "startHour",
+                          e.target.value
+                        )
+                      }
+                      disabled={row.startHour === "--"}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="time"
+                      value={row.endHour}
+                      onChange={(e) =>
+                        handleSchedulesChange(index, "endHour", e.target.value)
+                      }
+                      disabled={row.endHour === "--"}
+                    />
+                  </td>
+                  <td>
+                    <Button onClick={() => handleClosedDay(index)}>
+                      {row.isClosed ? "Seteaza programul" : "Zi libera"}
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Form>
+        <div className="addButton">
+          <Button variant="success" size="lg" onClick={handleSubmit}>
+            Salveaza modificarile facute
+          </Button>
+        </div>
+      </div>
+    </>
   );
 }
 

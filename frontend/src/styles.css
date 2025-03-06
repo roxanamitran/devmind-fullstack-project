@@ -109,7 +109,7 @@ body {
   background-color: gray;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  position: sticky;
+  
 }
 
 hr {
@@ -11153,12 +11153,43 @@ fieldset:disabled .btn {
 }
 
 .form {
-  margin: 200px 200px 200px 200px;
-  padding: 0px;
-  text-align: center;
-  justify-content: center;
-  width: 80%;
+  display: grid;
+  grid-template-columns: 1fr ;
+  gap: 20px;
+  align-items: center;
+  justify-items: center;
+  margin-top: 200px;
 }
+
+.form2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  width: 70%;
+  position: absolute; 
+  top: 50%; 
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cont{
+  display: grid;
+  grid-template-columns: 1fr ;
+  gap: 20px;
+  align-items: center;
+  justify-items: center;
+  margin-top: 200px;
+}
+/* .login{
+  background-image: url("assets/login.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  height: 80vh;
+  width: 100vw;
+} */
 
 html,
 body {
@@ -11201,4 +11232,70 @@ body {
 
 .color {
   background-color: #45503a;
+}
+
+.navBar {
+  height: 80px;
+}
+
+.centrat {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.form3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  width: 70%;
+  position: absolute; 
+  top: 50%; 
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.form4 {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-content: center;
+  align-items: center;
+  gap: 70px;
+  width: 70%;
+  position: absolute; 
+  top: 40%; 
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.appointment {
+  display: grid;
+  grid-template-columns: 1fr ;
+  gap: 20px;
+  align-items: center;
+  justify-items: center;
+  margin-top: 50px;
+}
+
+.appointments{
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+
+.addSalon {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: center;
+  justify-items: center;
+  margin-top: 60px; 
+}
+
+.addButton {
+  display: flex;
+  margin-top: 50px;
+  justify-content: space-around;
 }

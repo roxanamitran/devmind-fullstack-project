@@ -2,5 +2,5 @@ package io.roxanam.backend.entities;
 
 public enum AppointmentStatus {
     ACCEPTED,
-    REJECTED
+    CANCELLED
 }
