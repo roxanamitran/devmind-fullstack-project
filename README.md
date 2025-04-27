@@ -75,7 +75,7 @@ Installation To get the project running locally, follow these steps:
 Screenshots:
 
 ![Home Page](images/Home.png)
-![Salons](iamges/SalonOffers.png)
+![Salons](images/SalonOffers.png)
 ![Login Page](images/Login.png)
 ![Create User Page](images/CreateUser.png)
 ![Create Salon Page](images/CreateSalon.png)
